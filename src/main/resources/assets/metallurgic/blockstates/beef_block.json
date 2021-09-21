@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "layers=1": {
+      "model": "metallurgic:block/beef_block_height1"
+    },
+    "layers=2": {
+      "model": "metallurgic:block/beef_block_height2"
+    },
+    "layers=3": {
+      "model": "metallurgic:block/beef_block_height3"
+    },
+    "layers=4": {
+      "model": "metallurgic:block/beef_block_height4"
+    },
+    "layers=5": {
+      "model": "metallurgic:block/beef_block_height5"
+    },
+    "layers=6": {
+      "model": "metallurgic:block/beef_block_height6"
+    },
+    "layers=7": {
+      "model": "metallurgic:block/beef_block_height7"
+    },
+    "layers=8": {
+      "model": "metallurgic:block/beef_block_height8"
+    },
+    "layers=9": {
+      "model": "metallurgic:block/beef_block_height9"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:silver_nugget"
+		},
+		{
+			"item": "metallurgic:silver_nugget"
+		},
+		{
+			"item": "metallurgic:silver_nugget"
+		},
+		{
+			"item": "metallurgic:silver_nugget"
+		},
+		{
+			"item": "metallurgic:silver_nugget"
+		},
+		{
+			"item": "metallurgic:silver_nugget"
+		},
+		{
+			"item": "metallurgic:silver_nugget"
+		},
+		{
+			"item": "metallurgic:silver_nugget"
+		},
+		{
+			"item": "metallurgic:silver_nugget"
+		}
+	],
+	"result": {
+		"item": "metallurgic:silver_ingot",
+		"count": 1
+	}
+}

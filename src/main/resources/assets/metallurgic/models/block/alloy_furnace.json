@@ -1,0 +1,8 @@
+{
+	"parent": "block/machine_stone",
+	"textures": {
+		"front": "block/alloy_furnace_front",
+		"side": "block/machine_stone_side",
+		"top": "block/machine_stone_top_bottom"
+	}
+}

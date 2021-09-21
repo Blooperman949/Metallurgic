@@ -1,0 +1,9 @@
+{
+	"parent": "block/machine_wood",
+	"textures": {
+		"front": "block/smoker_front_on",
+		"side": "block/machine_wood_side",
+		"top": "block/machine_wood_top_bottom",
+		"wood": "block/machine_wood_wood"
+	}
+}

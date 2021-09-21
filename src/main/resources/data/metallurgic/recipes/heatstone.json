@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#I#",
+        "IXI",
+        "#I#"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:smooth_stone"
+        },
+        "I": {
+            "item": "metallurgic:insulator"
+        },
+        "X": {
+            "item": "metallurgic:machine_frame"
+        }
+    },
+    "result": {
+        "item": "metallurgic:heatstone",
+        "count": 1
+    }
+}

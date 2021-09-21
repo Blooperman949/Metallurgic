@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:titanium_ingot"
+		},
+		{
+			"item": "metallurgic:titanium_ingot"
+		},
+		{
+			"item": "metallurgic:titanium_ingot"
+		},
+		{
+			"item": "metallurgic:titanium_ingot"
+		},
+		{
+			"item": "metallurgic:titanium_ingot"
+		},
+		{
+			"item": "metallurgic:titanium_ingot"
+		},
+		{
+			"item": "metallurgic:titanium_ingot"
+		},
+		{
+			"item": "metallurgic:titanium_ingot"
+		},
+		{
+			"item": "metallurgic:titanium_ingot"
+		}
+	],
+	"result": {
+		"item": "metallurgic:titanium_block",
+		"count": 1
+	}
+}

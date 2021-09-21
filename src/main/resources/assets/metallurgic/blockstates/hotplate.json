@@ -1,0 +1,13 @@
+{
+	"variants": 
+	{
+		"lit=true":
+		{
+			"model": "metallurgic:block/hotplate_on"
+		},
+		"lit=false":
+		{
+			"model": "metallurgic:block/hotplate"
+		}
+	}
+}

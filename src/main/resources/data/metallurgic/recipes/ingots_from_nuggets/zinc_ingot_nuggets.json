@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:zinc_nugget"
+		},
+		{
+			"item": "metallurgic:zinc_nugget"
+		},
+		{
+			"item": "metallurgic:zinc_nugget"
+		},
+		{
+			"item": "metallurgic:zinc_nugget"
+		},
+		{
+			"item": "metallurgic:zinc_nugget"
+		},
+		{
+			"item": "metallurgic:zinc_nugget"
+		},
+		{
+			"item": "metallurgic:zinc_nugget"
+		},
+		{
+			"item": "metallurgic:zinc_nugget"
+		},
+		{
+			"item": "metallurgic:zinc_nugget"
+		}
+	],
+	"result": {
+		"item": "metallurgic:zinc_ingot",
+		"count": 1
+	}
+}

@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:lead_ingot"
+		},
+		{
+			"item": "metallurgic:lead_ingot"
+		},
+		{
+			"item": "metallurgic:lead_ingot"
+		},
+		{
+			"item": "metallurgic:lead_ingot"
+		},
+		{
+			"item": "metallurgic:lead_ingot"
+		},
+		{
+			"item": "metallurgic:lead_ingot"
+		},
+		{
+			"item": "metallurgic:lead_ingot"
+		},
+		{
+			"item": "metallurgic:lead_ingot"
+		},
+		{
+			"item": "metallurgic:lead_ingot"
+		}
+	],
+	"result": {
+		"item": "metallurgic:lead_block",
+		"count": 1
+	}
+}

@@ -1,0 +1,174 @@
+{
+	"parent": "block/orientable",
+	"textures": {
+		"top": "block/machine_wood_top_bottom",
+		"front": "block/machine_wood_side",
+		"side": "block/machine_wood_side",
+		"wood": "block/machine_wood_wood"
+	},
+	"display": {
+		"head": {
+			"rotation": [0,0,0],
+			"translation": [0, -56, 0],
+			"scale": [1.603, 1.603, 1.603]
+		}
+	},
+	"elements": [
+		{
+			"from": [1, 0, 1],
+			"to": [15, 16, 15],
+			"faces": {
+				"down": { "texture": "#top" },
+				"up": { "texture": "#top" },
+				"north": { "texture": "#front" },
+				"south": { "texture": "#side" },
+				"east": { "texture": "#side" },
+				"west": { "texture": "#side" }
+			}
+		},
+		{
+			"from": [0, 4, 0],
+			"to": [16, 7, 2],
+			"faces": {
+				"down": { "texture": "#wood" },
+				"up": { "texture": "#wood" },
+				"north": { "texture": "#front" },
+				"south": { "texture": "#side" },
+				"east": { "texture": "#side" },
+				"west": { "texture": "#side" }
+			}
+		},
+		{
+			"from": [0, 0, 0],
+			"to": [2, 16, 2],
+			"faces": {
+				"down": { "texture": "#wood" },
+				"up": { "texture": "#wood" },
+				"north": { "texture": "#front" },
+				"south": { "texture": "#side" },
+				"east": { "texture": "#side" },
+				"west": { "texture": "#side" }
+			}
+		},
+		{
+			"from": [0, 4, 0],
+			"to": [2, 7, 16],
+			"faces": {
+				"down": { "texture": "#wood" },
+				"up": { "texture": "#wood" },
+				"north": { "texture": "#front" },
+				"south": { "texture": "#side" },
+				"east": { "texture": "#side" },
+				"west": { "texture": "#side" }
+			}
+		},
+		{
+			"from": [0, 13, 0],
+			"to": [16, 15, 2],
+			"faces": {
+				"down": { "texture": "#wood" },
+				"up": { "texture": "#wood" },
+				"north": { "texture": "#front" },
+				"south": { "texture": "#side" },
+				"east": { "texture": "#side" },
+				"west": { "texture": "#side" }
+			}
+		},
+		{
+			"from": [0, 13, 0],
+			"to": [2, 15, 16],
+			"faces": {
+				"down": { "texture": "#wood" },
+				"up": { "texture": "#wood" },
+				"north": { "texture": "#front" },
+				"south": { "texture": "#side" },
+				"east": { "texture": "#side" },
+				"west": { "texture": "#side" }
+			}
+		},
+		{
+			"from": [0, 13, 14],
+			"to": [16, 15, 16],
+			"faces": {
+				"down": { "texture": "#wood" },
+				"up": { "texture": "#wood" },
+				"north": { "texture": "#front" },
+				"south": { "texture": "#side" },
+				"east": { "texture": "#side" },
+				"west": { "texture": "#side" }
+			}
+		},
+		{
+			"from": [14, 0, 14],
+			"to": [16, 16, 16],
+			"faces": {
+				"down": { "texture": "#wood" },
+				"up": { "texture": "#wood" },
+				"north": { "texture": "#front" },
+				"south": { "texture": "#side" },
+				"east": { "texture": "#side" },
+				"west": { "texture": "#side" }
+			}
+		},
+		{
+			"from": [14, 13, 0],
+			"to": [16, 15, 16],
+			"faces": {
+				"down": { "texture": "#wood" },
+				"up": { "texture": "#wood" },
+				"north": { "texture": "#front" },
+				"south": { "texture": "#side" },
+				"east": { "texture": "#side" },
+				"west": { "texture": "#side" }
+			}
+		},
+		{
+			"from": [14, 4, 0],
+			"to": [16, 7, 16],
+			"faces": {
+				"down": { "texture": "#wood" },
+				"up": { "texture": "#wood" },
+				"north": { "texture": "#front" },
+				"south": { "texture": "#side" },
+				"east": { "texture": "#side" },
+				"west": { "texture": "#side" }
+			}
+		},
+		{
+			"from": [0, 4, 14],
+			"to": [16, 7, 16],
+			"faces": {
+				"down": { "texture": "#wood" },
+				"up": { "texture": "#wood" },
+				"north": { "texture": "#front" },
+				"south": { "texture": "#side" },
+				"east": { "texture": "#side" },
+				"west": { "texture": "#side" }
+			}
+		},
+		{
+			"from": [0, 0, 14],
+			"to": [2, 16, 16],
+			"faces": {
+				"down": { "texture": "#wood" },
+				"up": { "texture": "#wood" },
+				"north": { "texture": "#front" },
+				"south": { "texture": "#side" },
+				"east": { "texture": "#side" },
+				"west": { "texture": "#side" }
+			}
+		},
+		{
+			"from": [14, 0, 0],
+			"to": [16, 16, 2],
+			"faces": {
+				"down": { "texture": "#wood" },
+				"up": { "texture": "#wood" },
+				"north": { "texture": "#front" },
+				"south": { "texture": "#side" },
+				"east": { "texture": "#side" },
+				"west": { "texture": "#side" }
+			}
+		}
+	]
+}

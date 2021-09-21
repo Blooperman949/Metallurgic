@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:sodium_ingot"
+		},
+		{
+			"item": "metallurgic:sodium_ingot"
+		},
+		{
+			"item": "metallurgic:sodium_ingot"
+		},
+		{
+			"item": "metallurgic:sodium_ingot"
+		},
+		{
+			"item": "metallurgic:sodium_ingot"
+		},
+		{
+			"item": "metallurgic:sodium_ingot"
+		},
+		{
+			"item": "metallurgic:sodium_ingot"
+		},
+		{
+			"item": "metallurgic:sodium_ingot"
+		},
+		{
+			"item": "metallurgic:sodium_ingot"
+		}
+	],
+	"result": {
+		"item": "metallurgic:sodium_block",
+		"count": 1
+	}
+}

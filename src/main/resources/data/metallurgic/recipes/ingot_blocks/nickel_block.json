@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:nickel_ingot"
+		},
+		{
+			"item": "metallurgic:nickel_ingot"
+		},
+		{
+			"item": "metallurgic:nickel_ingot"
+		},
+		{
+			"item": "metallurgic:nickel_ingot"
+		},
+		{
+			"item": "metallurgic:nickel_ingot"
+		},
+		{
+			"item": "metallurgic:nickel_ingot"
+		},
+		{
+			"item": "metallurgic:nickel_ingot"
+		},
+		{
+			"item": "metallurgic:nickel_ingot"
+		},
+		{
+			"item": "metallurgic:nickel_ingot"
+		}
+	],
+	"result": {
+		"item": "metallurgic:nickel_block",
+		"count": 1
+	}
+}

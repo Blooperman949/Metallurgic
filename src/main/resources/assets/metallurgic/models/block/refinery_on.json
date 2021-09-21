@@ -1,0 +1,8 @@
+{
+	"parent": "metallurgic:block/machine_stone",
+	"textures": {
+		"front": "metallurgic:block/refinery_front_on",
+		"side": "metallurgic:block/machine_stone_side",
+		"top": "metallurgic:block/machine_stone_top_bottom"
+	}
+}
