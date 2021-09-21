@@ -1,0 +1,7 @@
+{
+	"parent": "item/leather_helmet",
+	"textures": {
+		"layer0": "item/iron_nugget",
+		"layer1": "block/empty"
+	}
+}

@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:copper_nugget"
+		},
+		{
+			"item": "metallurgic:copper_nugget"
+		},
+		{
+			"item": "metallurgic:copper_nugget"
+		},
+		{
+			"item": "metallurgic:copper_nugget"
+		},
+		{
+			"item": "metallurgic:copper_nugget"
+		},
+		{
+			"item": "metallurgic:copper_nugget"
+		},
+		{
+			"item": "metallurgic:copper_nugget"
+		},
+		{
+			"item": "metallurgic:copper_nugget"
+		},
+		{
+			"item": "metallurgic:copper_nugget"
+		}
+	],
+	"result": {
+		"item": "metallurgic:copper_ingot",
+		"count": 1
+	}
+}

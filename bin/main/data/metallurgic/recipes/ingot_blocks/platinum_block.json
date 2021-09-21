@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:platinum_ingot"
+		},
+		{
+			"item": "metallurgic:platinum_ingot"
+		},
+		{
+			"item": "metallurgic:platinum_ingot"
+		},
+		{
+			"item": "metallurgic:platinum_ingot"
+		},
+		{
+			"item": "metallurgic:platinum_ingot"
+		},
+		{
+			"item": "metallurgic:platinum_ingot"
+		},
+		{
+			"item": "metallurgic:platinum_ingot"
+		},
+		{
+			"item": "metallurgic:platinum_ingot"
+		},
+		{
+			"item": "metallurgic:platinum_ingot"
+		}
+	],
+	"result": {
+		"item": "metallurgic:platinum_block",
+		"count": 1
+	}
+}

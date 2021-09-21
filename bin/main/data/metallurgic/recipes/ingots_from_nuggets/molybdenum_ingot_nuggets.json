@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:molybdenum_nugget"
+		},
+		{
+			"item": "metallurgic:molybdenum_nugget"
+		},
+		{
+			"item": "metallurgic:molybdenum_nugget"
+		},
+		{
+			"item": "metallurgic:molybdenum_nugget"
+		},
+		{
+			"item": "metallurgic:molybdenum_nugget"
+		},
+		{
+			"item": "metallurgic:molybdenum_nugget"
+		},
+		{
+			"item": "metallurgic:molybdenum_nugget"
+		},
+		{
+			"item": "metallurgic:molybdenum_nugget"
+		},
+		{
+			"item": "metallurgic:molybdenum_nugget"
+		}
+	],
+	"result": {
+		"item": "metallurgic:molybdenum_ingot",
+		"count": 1
+	}
+}

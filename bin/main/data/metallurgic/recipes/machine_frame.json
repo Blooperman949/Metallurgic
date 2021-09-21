@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"FFF",
+		"FOF",
+		"FFF"
+	],
+	"key": {
+		"F": {
+			"item": "minecraft:furnace"
+		},
+		"O": {
+			"tag": "metallurgic:metal_ores"
+		}
+	},
+	"result": {
+		"item": "metallurgic:machine_frame",
+		"count": 8
+	}
+}

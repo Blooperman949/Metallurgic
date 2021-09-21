@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:cobalt_ingot"
+		},
+		{
+			"item": "metallurgic:cobalt_ingot"
+		},
+		{
+			"item": "metallurgic:cobalt_ingot"
+		},
+		{
+			"item": "metallurgic:cobalt_ingot"
+		},
+		{
+			"item": "metallurgic:cobalt_ingot"
+		},
+		{
+			"item": "metallurgic:cobalt_ingot"
+		},
+		{
+			"item": "metallurgic:cobalt_ingot"
+		},
+		{
+			"item": "metallurgic:cobalt_ingot"
+		},
+		{
+			"item": "metallurgic:cobalt_ingot"
+		}
+	],
+	"result": {
+		"item": "metallurgic:cobalt_block",
+		"count": 1
+	}
+}

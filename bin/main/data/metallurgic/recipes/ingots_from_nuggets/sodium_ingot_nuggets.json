@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:sodium_nugget"
+		},
+		{
+			"item": "metallurgic:sodium_nugget"
+		},
+		{
+			"item": "metallurgic:sodium_nugget"
+		},
+		{
+			"item": "metallurgic:sodium_nugget"
+		},
+		{
+			"item": "metallurgic:sodium_nugget"
+		},
+		{
+			"item": "metallurgic:sodium_nugget"
+		},
+		{
+			"item": "metallurgic:sodium_nugget"
+		},
+		{
+			"item": "metallurgic:sodium_nugget"
+		},
+		{
+			"item": "metallurgic:sodium_nugget"
+		}
+	],
+	"result": {
+		"item": "metallurgic:sodium_ingot",
+		"count": 1
+	}
+}

@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:lithium_ingot"
+		},
+		{
+			"item": "metallurgic:lithium_ingot"
+		},
+		{
+			"item": "metallurgic:lithium_ingot"
+		},
+		{
+			"item": "metallurgic:lithium_ingot"
+		},
+		{
+			"item": "metallurgic:lithium_ingot"
+		},
+		{
+			"item": "metallurgic:lithium_ingot"
+		},
+		{
+			"item": "metallurgic:lithium_ingot"
+		},
+		{
+			"item": "metallurgic:lithium_ingot"
+		},
+		{
+			"item": "metallurgic:lithium_ingot"
+		}
+	],
+	"result": {
+		"item": "metallurgic:lithium_block",
+		"count": 1
+	}
+}

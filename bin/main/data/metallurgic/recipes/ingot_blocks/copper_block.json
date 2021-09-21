@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:copper_ingot"
+		},
+		{
+			"item": "metallurgic:copper_ingot"
+		},
+		{
+			"item": "metallurgic:copper_ingot"
+		},
+		{
+			"item": "metallurgic:copper_ingot"
+		},
+		{
+			"item": "metallurgic:copper_ingot"
+		},
+		{
+			"item": "metallurgic:copper_ingot"
+		},
+		{
+			"item": "metallurgic:copper_ingot"
+		},
+		{
+			"item": "metallurgic:copper_ingot"
+		},
+		{
+			"item": "metallurgic:copper_ingot"
+		}
+	],
+	"result": {
+		"item": "metallurgic:copper_block",
+		"count": 1
+	}
+}

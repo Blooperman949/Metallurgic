@@ -1,0 +1,8 @@
+{
+	"parent": "metallurgic:block/machine_stone",
+	"textures": {
+		"front": "metallurgic:block/hotplate_side_on",
+		"side": "metallurgic:block/hotplate_side_on",
+		"top": "metallurgic:block/heatstone"
+	}
+}

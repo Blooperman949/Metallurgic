@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:zinc_ingot"
+		},
+		{
+			"item": "metallurgic:zinc_ingot"
+		},
+		{
+			"item": "metallurgic:zinc_ingot"
+		},
+		{
+			"item": "metallurgic:zinc_ingot"
+		},
+		{
+			"item": "metallurgic:zinc_ingot"
+		},
+		{
+			"item": "metallurgic:zinc_ingot"
+		},
+		{
+			"item": "metallurgic:zinc_ingot"
+		},
+		{
+			"item": "metallurgic:zinc_ingot"
+		},
+		{
+			"item": "metallurgic:zinc_ingot"
+		}
+	],
+	"result": {
+		"item": "metallurgic:zinc_block",
+		"count": 1
+	}
+}

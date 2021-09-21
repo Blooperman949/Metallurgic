@@ -1,0 +1,9 @@
+{
+	"values": [
+		"minecraft:iron_ore",
+		"#minecraft:gold_ores",
+		"minecraft:ancient_debris",
+		"metallurgic:malleable_ore",
+		"metallurgic:alkaline_ore"
+	]
+}

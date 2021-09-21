@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:tin_ingot"
+		},
+		{
+			"item": "metallurgic:tin_ingot"
+		},
+		{
+			"item": "metallurgic:tin_ingot"
+		},
+		{
+			"item": "metallurgic:tin_ingot"
+		},
+		{
+			"item": "metallurgic:tin_ingot"
+		},
+		{
+			"item": "metallurgic:tin_ingot"
+		},
+		{
+			"item": "metallurgic:tin_ingot"
+		},
+		{
+			"item": "metallurgic:tin_ingot"
+		},
+		{
+			"item": "metallurgic:tin_ingot"
+		}
+	],
+	"result": {
+		"item": "metallurgic:tin_block",
+		"count": 1
+	}
+}

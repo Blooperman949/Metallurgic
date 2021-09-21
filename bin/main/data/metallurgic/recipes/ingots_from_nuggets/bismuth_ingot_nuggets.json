@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:bismuth_nugget"
+		},
+		{
+			"item": "metallurgic:bismuth_nugget"
+		},
+		{
+			"item": "metallurgic:bismuth_nugget"
+		},
+		{
+			"item": "metallurgic:bismuth_nugget"
+		},
+		{
+			"item": "metallurgic:bismuth_nugget"
+		},
+		{
+			"item": "metallurgic:bismuth_nugget"
+		},
+		{
+			"item": "metallurgic:bismuth_nugget"
+		},
+		{
+			"item": "metallurgic:bismuth_nugget"
+		},
+		{
+			"item": "metallurgic:bismuth_nugget"
+		}
+	],
+	"result": {
+		"item": "metallurgic:bismuth_ingot",
+		"count": 1
+	}
+}

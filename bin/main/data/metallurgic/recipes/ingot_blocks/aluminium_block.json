@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "metallurgic:aluminium_ingot"
+		},
+		{
+			"item": "metallurgic:aluminium_ingot"
+		},
+		{
+			"item": "metallurgic:aluminium_ingot"
+		},
+		{
+			"item": "metallurgic:aluminium_ingot"
+		},
+		{
+			"item": "metallurgic:aluminium_ingot"
+		},
+		{
+			"item": "metallurgic:aluminium_ingot"
+		},
+		{
+			"item": "metallurgic:aluminium_ingot"
+		},
+		{
+			"item": "metallurgic:aluminium_ingot"
+		},
+		{
+			"item": "metallurgic:aluminium_ingot"
+		}
+	],
+	"result": {
+		"item": "metallurgic:aluminium_block",
+		"count": 1
+	}
+}
