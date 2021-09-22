@@ -15,7 +15,10 @@ gradle-app.setting
 
 ### ForgeGradle ###
 # Minecraft client/server files
-run/
+/run/
 
 # Eclipse
-.settings
+.settings/org.eclipse.jdt.core.prefs
+.settings/org.eclipse.buildship.core.prefs
+.classpath
+.project
