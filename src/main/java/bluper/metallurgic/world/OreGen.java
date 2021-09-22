@@ -1,15 +1,12 @@
 package bluper.metallurgic.world;
 
 import bluper.metallurgic.Metallurgic;
-import net.minecraft.block.Blocks;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.OreFeatureConfig;
-import net.minecraft.world.gen.feature.OreFeatureConfig.FillerBlockType;
-import net.minecraft.world.gen.feature.template.BlockMatchRuleTest;
-import net.minecraft.world.gen.placement.Placement;
-import net.minecraft.world.gen.placement.TopSolidRangeConfig;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,21 +14,21 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
 public class OreGen
-{	
+{
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void gen(final BiomeLoadingEvent event)
 	{
-		if(event.getCategory().equals(Biome.Category.NETHER))
+		if (event.getCategory().equals(Biome.BiomeCategory.NETHER))
 		{
-			event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(
-					new OreFeatureConfig(FillerBlockType.NETHERRACK, Metallurgic.ALKALINE_ORE_BLOCK.get().getDefaultState(), 20))
-					.withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(110, 0, 130))).square().func_242731_b(1)); 
+			event.getGeneration().addFeature(Decoration.UNDERGROUND_ORES,
+					Feature.ORE.configured(new OreConfiguration(new BlockMatchTest(Blocks.END_STONE),
+							Metallurgic.ALKALINE_ORE_BLOCK.get().defaultBlockState(), 4))); //110 130
 		}
-		if(event.getCategory().equals(Biome.Category.THEEND))
+		if (event.getCategory().equals(Biome.BiomeCategory.THEEND))
 		{
-			event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(
-					new OreFeatureConfig(new BlockMatchRuleTest(Blocks.END_STONE), Metallurgic.MALLEABLE_ORE_BLOCK.get().getDefaultState(), 4))
-					.withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(0, 0, 100))).square().func_242731_b(20)); 
+			event.getGeneration().addFeature(Decoration.UNDERGROUND_ORES,
+					Feature.ORE.configured(new OreConfiguration(new BlockMatchTest(Blocks.END_STONE),
+							Metallurgic.MALLEABLE_ORE_BLOCK.get().defaultBlockState(), 4))); //30 70
 		}
 	}
 }
