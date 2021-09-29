@@ -2,20 +2,21 @@ package bluper.metallurgic.blocks;
 
 import javax.annotation.Nullable;
 
-import bluper.metallurgic.blocks.tiles.InfiniHeatTile;
-import net.minecraft.core.BlockPos;
+import bluper.metallurgic.Metallurgic;
+import bluper.metallurgic.blocks.tiles.MachineTile;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class InfiniHeatBlock extends AbstractMachineBlock
-{
-	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
+public abstract class AbstractMachineBlock extends Block implements EntityBlock
+{	
+	public AbstractMachineBlock()
 	{
-		return new InfiniHeatTile(pos, state);
+		super(Metallurgic.MACHINE_STONE_PROPERTIES);
 	}
 
 	@Nullable
@@ -26,7 +27,7 @@ public class InfiniHeatBlock extends AbstractMachineBlock
 		if (!level.isClientSide)
 			return (level1, blockPos, blockState, t) ->
 			{
-				if (t instanceof InfiniHeatTile tile)
+				if (t instanceof MachineTile tile)
 				{
 					tile.tick();
 				}

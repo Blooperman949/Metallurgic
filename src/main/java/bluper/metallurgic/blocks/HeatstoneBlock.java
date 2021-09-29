@@ -1,29 +1,15 @@
 package bluper.metallurgic.blocks;
 
-import bluper.metallurgic.Metallurgic;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockReader;
+import bluper.metallurgic.blocks.tiles.HeatstoneTile;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class HeatstoneBlock extends Block
+public class HeatstoneBlock extends AbstractMachineBlock
 {
-
-	public HeatstoneBlock()
-	{
-		super(Metallurgic.MACHINE_STONE_PROPERTIES);
-	}
-
 	@Override
-	public boolean hasTileEntity(BlockState state)
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return true;
+		return new HeatstoneTile(pos, state);
 	}
-
-	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
-	{
-		return new HeatstoneTile();
-	}
-
 }

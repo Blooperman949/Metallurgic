@@ -1,7 +1,10 @@
 {
 	"values": [
 		"minecraft:iron_ore",
+		"minecraft:deepslate_iron_ore",
 		"#minecraft:gold_ores",
+		"minecraft:copper_ore",
+		"minecraft:deepslate_copper_ore",
 		"minecraft:ancient_debris",
 		"metallurgic:malleable_ore",
 		"metallurgic:alkaline_ore"

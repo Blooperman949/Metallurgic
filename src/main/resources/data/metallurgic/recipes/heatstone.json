@@ -1,18 +1,18 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "#I#",
-        "IXI",
-        "#I#"
+        "SIS",
+        "IFI",
+        "SIS"
     ],
     "key": {
-        "#": {
+        "S": {
             "item": "minecraft:smooth_stone"
         },
         "I": {
             "item": "metallurgic:insulator"
         },
-        "X": {
+        "F": {
             "item": "metallurgic:machine_frame"
         }
     },

@@ -1,21 +1,22 @@
 package bluper.metallurgic.blocks;
 
 import bluper.metallurgic.Metallurgic;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.biome.Biome.Precipitation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class SodiumBlock extends Block
 {
-	World w;
+	Level w;
 
 	public SodiumBlock(Properties properties)
 	{
@@ -23,54 +24,54 @@ public class SodiumBlock extends Block
 	}
 
 	@Override
-	public void fillWithRain(World world, BlockPos pos)
+	public void handlePrecipitation(BlockState state, Level Level, BlockPos pos, Precipitation precip)
 	{
-		explode(world, pos);
+		explode(Level, pos);
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn,
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor LevelIn,
 			BlockPos currentPos, BlockPos facingPos)
 	{
-		if (isTouchingLiquid(worldIn, currentPos))
+		if (isTouchingLiquid(LevelIn, currentPos))
 			explode(w, currentPos);
-		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return super.updateShape(stateIn, facing, facingState, LevelIn, currentPos, facingPos);
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context)
+	public BlockState getStateForPlacement(BlockPlaceContext context)
 	{
-		w = context.getWorld();
-		boolean flag = isTouchingLiquid(w, context.getPos());
+		w = context.getLevel();
+		boolean flag = isTouchingLiquid(w, context.getClickedPos());
 		if (flag)
-			explode(w, context.getPos());
-		return flag ? Blocks.AIR.getDefaultState() : super.getStateForPlacement(context);
+			explode(w, context.getClickedPos());
+		return flag ? Blocks.AIR.defaultBlockState() : super.getStateForPlacement(context);
 	}
 
-	private void explode(World world, BlockPos pos)
+	private void explode(Level Level, BlockPos pos)
 	{
-		if (!world.isRemote)
+		if (!Level.isClientSide)
 		{
-			world.createExplosion(null, Metallurgic.SODIUM_EXPLODE_DAMAGE, null, pos.getX(), pos.getY(), pos.getZ(),
-					1.5f, false, Explosion.Mode.DESTROY);
+			Level.explode(null, Metallurgic.SODIUM_EXPLODE_DAMAGE, null, pos.getX(), pos.getY(), pos.getZ(),
+					1.5f, false, Explosion.BlockInteraction.DESTROY);
 		}
 	}
 
-	// stolen from net.minecraft.block.ConcretePowderBlock
-	private static boolean isTouchingLiquid(IBlockReader reader, BlockPos pos)
+	// stolen from net.minecraft.world.level.block.ConcretePowderBlock
+	private static boolean isTouchingLiquid(BlockGetter reader, BlockPos pos)
 	{
 		boolean flag = false;
-		BlockPos.Mutable blockpos$mutable = pos.toMutable();
+		BlockPos.MutableBlockPos mutable = pos.mutable();
 
 		for (Direction direction : Direction.values())
 		{
-			BlockState blockstate = reader.getBlockState(blockpos$mutable);
+			BlockState blockstate = reader.getBlockState(mutable);
 			if (direction != Direction.DOWN || isWater(blockstate))
 			{
-				blockpos$mutable.setAndMove(pos, direction);
-				blockstate = reader.getBlockState(blockpos$mutable);
-				if (isWater(blockstate) && !blockstate.isSolidSide(reader, pos, direction.getOpposite()))
+				mutable.setWithOffset(pos, direction);
+				blockstate = reader.getBlockState(mutable);
+				if (isWater(blockstate) && !blockstate.isSolidRender(reader, pos));
 				{
 					flag = true;
 					break;
@@ -83,11 +84,11 @@ public class SodiumBlock extends Block
 
 	private static boolean isWater(BlockState state)
 	{
-		return state.getFluidState().isTagged(FluidTags.WATER);
+		return state.getFluidState().is(FluidTags.WATER);
 	}
 
 	@Override
-	public boolean canDropFromExplosion(Explosion explosionIn)
+	public boolean dropFromExplosion(Explosion explosionIn)
 	{
 		return false;
 	}

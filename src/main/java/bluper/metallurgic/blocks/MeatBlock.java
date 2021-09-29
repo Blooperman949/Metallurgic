@@ -1,94 +1,97 @@
 package bluper.metallurgic.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Food;
-import net.minecraft.item.Item;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class MeatBlock extends Block
 {
 	public static final IntegerProperty LAYERS = IntegerProperty.create("layers", 1, 9);
 	protected SoundEvent eatSound;
-	protected Food food;
+	protected FoodProperties food;
 	protected static final VoxelShape[] SHAPES = new VoxelShape[]
-	{ VoxelShapes.empty(), Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.7D, 16.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 3.5D, 16.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 5.3D, 16.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 7.1D, 16.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.8D, 16.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 10.6D, 16.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 12.4D, 16.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 14.2D, 16.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D) };
+	{ Shapes.empty(), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.7D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 3.5D, 16.0D),
+			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 5.3D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 7.1D, 16.0D),
+			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.8D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 10.6D, 16.0D),
+			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 12.4D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.2D, 16.0D),
+			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D) };
 
 	public MeatBlock(Item foodItem, Properties properties)
 	{
 		super(properties);
-		if (foodItem.isFood())
+		if (foodItem.isEdible())
 		{
-			this.food = foodItem.getFood();
-			this.eatSound = foodItem.getEatSound();
+			this.food = foodItem.getFoodProperties();
+			this.eatSound = foodItem.getEatingSound();
 		} else
 			throw new IllegalArgumentException("MeatBlock requires a food item");
-		this.setDefaultState(this.stateContainer.getBaseState().with(LAYERS, Integer.valueOf(9)));
+		this.registerDefaultState(this.stateDefinition.any().setValue(LAYERS, Integer.valueOf(9)));
 	}
 
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
-			Hand handIn, BlockRayTraceResult hit)
+	@Override
+	public InteractionResult use(BlockState state, Level levelIn, BlockPos pos, Player player, InteractionHand handIn,
+			BlockHitResult hit)
 	{
-		if (player.getFoodStats().needFood())
+		if (player.getFoodData().needsFood())
 		{
-			player.getFoodStats().addStats(food.getHealing(), food.getSaturation());
+			player.getFoodData().eat(food.getNutrition(), food.getSaturationModifier());
 			player.playSound(eatSound, 1, 1);
-			if (state.get(LAYERS) > 1)
-				worldIn.setBlockState(pos, state.with(LAYERS, state.get(LAYERS) - 1));
+			if (state.getValue(LAYERS) > 1)
+				levelIn.setBlockAndUpdate(pos, state.setValue(LAYERS, state.getValue(LAYERS) - 1));
 			else
-				worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
-			return ActionResultType.SUCCESS;
+				levelIn.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+			return InteractionResult.SUCCESS;
 		}
-		return ActionResultType.FAIL;
+		return InteractionResult.FAIL;
 	}
 
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context)
 	{
-		return SHAPES[state.get(LAYERS)];
+		return SHAPES[state.getValue(LAYERS)];
 	}
 
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+	@Override
+	public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context)
 	{
-		return SHAPES[state.get(LAYERS)];
+		return SHAPES[state.getValue(LAYERS)];
 	}
 
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader reader, BlockPos pos)
+	@Override
+	public VoxelShape getOcclusionShape(BlockState state, BlockGetter reader, BlockPos pos)
 	{
-		return SHAPES[state.get(LAYERS)];
+		return SHAPES[state.getValue(LAYERS)];
 	}
 
-	public VoxelShape getRayTraceShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context)
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context)
 	{
-		return SHAPES[state.get(LAYERS)];
+		return SHAPES[state.getValue(LAYERS)];
 	}
 
-	public boolean isTransparent(BlockState state)
+	@Override
+	public boolean useShapeForLightOcclusion(BlockState state)
 	{
-		return state.get(LAYERS) < 9;
+		return state.getValue(LAYERS) < 9;
 	}
 
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+	@Override
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
 	{
 		builder.add(LAYERS);
 	}

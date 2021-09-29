@@ -1,21 +1,22 @@
-package bluper.metallurgic.blocks;
+package bluper.metallurgic.blocks.tiles;
 
 import java.util.Optional;
 
 import bluper.metallurgic.Metallurgic;
+import bluper.metallurgic.blocks.HotplateBlock;
 import bluper.metallurgic.util.Temperature;
-import net.minecraft.block.BlockState;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CampfireCookingRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CampfireCookingRecipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -25,10 +26,10 @@ public class HotplateTile extends MachineTile
 	int cookingTime;
 	int totalCookingTime;
 
-	public HotplateTile()
+	public HotplateTile(BlockPos pos, BlockState state)
 	{
 		super(Metallurgic.HOTPLATE_TILE.get(), Temperature.CONCRETE_MELTING, new Direction[]
-		{ Direction.UP }, false);
+		{ Direction.UP }, false, pos, state);
 	}
 
 	@Override
@@ -38,25 +39,25 @@ public class HotplateTile extends MachineTile
 		ItemStack itemstack = inventory.getStackInSlot(0);
 		boolean hot = heatStorage.getTemp() > 449;
 		if (hot)
-			world.setBlockState(pos, getBlockState().with(HotplateBlock.LIT, true));
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(HotplateBlock.LIT, true));
 		else
-			world.setBlockState(pos, getBlockState().with(HotplateBlock.LIT, false));
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(HotplateBlock.LIT, false));
 		if (!itemstack.isEmpty())
 		{
 			if (hot)
 				cookingTime += Math.floor(heatStorage.getTemp() / 200);
 			if (cookingTime >= totalCookingTime)
 			{
-				IInventory inv = new Inventory(itemstack);
-				ItemStack is = this.world.getRecipeManager().getRecipe(IRecipeType.CAMPFIRE_COOKING, inv, this.world)
-						.map((campfireRecipe) ->
+				Container inv = new SimpleContainer(itemstack);
+				ItemStack is = this.level.getRecipeManager().getRecipeFor(RecipeType.CAMPFIRE_COOKING, inv, level)
+						.map((p) ->
 						{
-							return campfireRecipe.getCraftingResult(inv);
+							return p.assemble(inv);
 						}).orElse(itemstack);
 				is.setCount(itemstack.getCount());
 
-				BlockPos blockpos = this.getPos();
-				InventoryHelper.spawnItemStack(world, (double) blockpos.getX(), (double) blockpos.getY() + 0.5,
+				BlockPos blockpos = this.getBlockPos();
+				Containers.dropItemStack(level, (double) blockpos.getX(), (double) blockpos.getY() + 0.5,
 						(double) blockpos.getZ(), is);
 				inventory.setStackInSlot(0, ItemStack.EMPTY);
 			}
@@ -64,27 +65,27 @@ public class HotplateTile extends MachineTile
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt)
+	public void load(CompoundTag nbt)
 	{
 		totalCookingTime = nbt.getInt("TotalCookingTime");
 		cookingTime = nbt.getInt("CookingTime");
 		inventory.deserializeNBT(nbt.getCompound("Inventory"));
-		super.read(state, nbt);
+		super.load(nbt);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT nbt)
+	public CompoundTag save(CompoundTag nbt)
 	{
 		nbt.putInt("TotalCookingTime", totalCookingTime);
 		nbt.putInt("CookingTime", cookingTime);
 		nbt.put("Inventory", inventory.serializeNBT());
-		return super.write(nbt);
+		return super.save(nbt);
 	}
 
 	private void inventoryChanged()
 	{
-		markDirty();
-		getWorld().notifyBlockUpdate(this.getPos(), this.getBlockState(), this.getBlockState(),
+		this.setChanged();
+		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(),
 				Constants.BlockFlags.NOTIFY_NEIGHBORS + Constants.BlockFlags.BLOCK_UPDATE);
 	}
 
@@ -109,35 +110,35 @@ public class HotplateTile extends MachineTile
 	}
 
 	@Override
-	public CompoundNBT getUpdateTag()
+	public CompoundTag getUpdateTag()
 	{
-		return write(new CompoundNBT());
+		return save(new CompoundTag());
 	}
 
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket()
+	public ClientboundBlockEntityDataPacket getUpdatePacket()
 	{
-		CompoundNBT nbt = new CompoundNBT();
-		write(nbt);
-		return new SUpdateTileEntityPacket(getPos(), -1, nbt);
+		CompoundTag nbt = new CompoundTag();
+		save(nbt);
+		return new ClientboundBlockEntityDataPacket(this.getBlockPos(), -1, nbt);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt)
 	{
-		read(getBlockState(), pkt.getNbtCompound());
+		this.load(pkt.getTag());
 	}
 
 	public Optional<CampfireCookingRecipe> findMatchingRecipe(ItemStack itemStackIn)
 	{
 		return !inventory.getStackInSlot(0).equals(ItemStack.EMPTY) ? Optional.empty()
-				: world.getRecipeManager().getRecipe(IRecipeType.CAMPFIRE_COOKING, new Inventory(itemStackIn),
-						this.world);
+				: level.getRecipeManager().getRecipeFor(RecipeType.CAMPFIRE_COOKING, new SimpleContainer(itemStackIn),
+						this.level);
 	}
 
 	public void dropContents()
 	{
-		InventoryHelper.spawnItemStack(world, (double) pos.getX(), (double) pos.getY() + 1, (double) pos.getZ(),
+		Containers.dropItemStack(level, (double) worldPosition.getX(), (double) worldPosition.getY() + 1, (double) worldPosition.getZ(),
 				inventory.getStackInSlot(0));
 		inventory.setStackInSlot(0, ItemStack.EMPTY);
 		inventoryChanged();

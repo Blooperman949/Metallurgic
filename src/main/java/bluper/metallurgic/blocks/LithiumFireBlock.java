@@ -1,16 +1,15 @@
 package bluper.metallurgic.blocks;
 
 import bluper.metallurgic.Metallurgic;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoulFireBlock;
-import net.minecraft.item.FireChargeItem;
-import net.minecraft.item.FlintAndSteelItem;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.FireChargeItem;
+import net.minecraft.world.item.FlintAndSteelItem;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoulFireBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,23 +27,17 @@ public class LithiumFireBlock extends SoulFireBlock
 		if ((e.getItemStack().getItem() instanceof FireChargeItem
 				| e.getItemStack().getItem() instanceof FlintAndSteelItem))
 		{
-			World world = e.getWorld();
-			Direction dir = e.getHitVec().getFace();
-			BlockPos pos = e.getHitVec().getPos().offset(dir);
-			BlockState state = world.getBlockState(pos.down());
+			Level world = e.getWorld();
+			Direction dir = e.getHitVec().getDirection();
+			BlockPos pos = e.getHitVec().getBlockPos().relative(dir);
+			BlockState state = world.getBlockState(pos.below());
 			if (shouldLightLithiumFire(state.getBlock()))
 			{
 				e.setCanceled(true);
-				e.setCancellationResult(ActionResultType.SUCCESS);
-				world.setBlockState(pos, Metallurgic.LITHIUM_FIRE.get().getDefaultState());
+				e.setCancellationResult(InteractionResult.SUCCESS);
+				world.setBlockAndUpdate(pos, Metallurgic.LITHIUM_FIRE.get().defaultBlockState());
 			}
 		}
-	}
-
-	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
-	{
-		return shouldLightLithiumFire(worldIn.getBlockState(pos.down()).getBlock());
 	}
 
 	public static boolean shouldLightLithiumFire(Block block)

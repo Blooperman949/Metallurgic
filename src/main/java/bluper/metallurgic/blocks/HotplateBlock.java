@@ -2,91 +2,101 @@ package bluper.metallurgic.blocks;
 
 import java.util.Optional;
 
-import bluper.metallurgic.Metallurgic;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CampfireCookingRecipe;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import javax.annotation.Nullable;
 
-public class HotplateBlock extends Block
+import bluper.metallurgic.Metallurgic;
+import bluper.metallurgic.blocks.tiles.HotplateTile;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CampfireCookingRecipe;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
+
+public class HotplateBlock extends AbstractMachineBlock
 {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
-	public HotplateBlock()
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(Metallurgic.MACHINE_STONE_PROPERTIES);
+		return new HotplateTile(pos, state);
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state)
+	public void stepOn(Level worldIn, BlockPos pos, BlockState state, Entity entityIn)
 	{
-		return true;
-	}
-
-	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
-	{
-		return new HotplateTile();
-	}
-
-	@Override
-	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
-	{
-		double temp = ((HotplateTile) worldIn.getTileEntity(pos)).getHeatStorage().getTemp();
-		if (!entityIn.isImmuneToFire() && entityIn instanceof LivingEntity
+		double temp = ((HotplateTile) worldIn.getBlockEntity(pos)).getHeatStorage().getTemp();
+		if (!entityIn.fireImmune() && entityIn instanceof LivingEntity
 				&& !EnchantmentHelper.hasFrostWalker((LivingEntity) entityIn) && temp > 420)
 		{
-			if (!(entityIn.hurtResistantTime > 0))
-				entityIn.attackEntityFrom(Metallurgic.HOTPLATE_DAMAGE, (float) (temp / 100));
+			if (!(entityIn.invulnerableTime > 0))
+				entityIn.hurt(Metallurgic.HOTPLATE_DAMAGE, (float) (temp / 100));
 		}
-		super.onEntityWalk(worldIn, pos, entityIn);
+		super.stepOn(worldIn, pos, state, entityIn);
 	}
 
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
-			Hand handIn, BlockRayTraceResult hit)
+	@Override
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player,
+			InteractionHand handIn, BlockHitResult hit)
 	{
-		TileEntity te = worldIn.getTileEntity(pos);
+		BlockEntity te = worldIn.getBlockEntity(pos);
 		if (te instanceof HotplateTile)
 		{
 			HotplateTile hte = (HotplateTile) te;
-			ItemStack is = player.getHeldItem(handIn);
+			ItemStack is = player.getItemInHand(handIn);
 			Optional<CampfireCookingRecipe> optional = hte.findMatchingRecipe(is);
 			if (optional.isPresent())
 			{
-				if (!worldIn.isRemote
-						&& hte.addItem(player.abilities.isCreativeMode ? is.copy() : is, optional.get().getCookTime()))
-					return ActionResultType.SUCCESS;
-				return ActionResultType.CONSUME;
+				if (!worldIn.isClientSide
+						&& hte.addItem(is.split(1), optional.get().getCookingTime()))
+					return InteractionResult.SUCCESS;
+				return InteractionResult.CONSUME;
 			}
 			hte.dropContents();
-			return ActionResultType.FAIL;
+			return InteractionResult.FAIL;
 		}
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 
+	@Nullable
 	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player)
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
+			BlockEntityType<T> type)
 	{
-		super.onBlockHarvested(worldIn, pos, state, player);
-		((HotplateTile) worldIn.getTileEntity(pos)).dropContents();
+		if (!level.isClientSide)
+			return (level1, blockPos, blockState, t) ->
+			{
+				if (t instanceof HotplateTile tile)
+				{
+					tile.tick();
+				}
+			};
+		return null;
 	}
 
 	@Override
-	public void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+	public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player)
+	{
+		super.playerWillDestroy(worldIn, pos, state, player);
+		((HotplateTile) worldIn.getBlockEntity(pos)).dropContents();
+	}
+
+	@Override
+	public void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
 	{
 		builder.add(LIT);
 	}
