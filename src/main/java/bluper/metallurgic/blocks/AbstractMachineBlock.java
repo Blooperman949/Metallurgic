@@ -27,9 +27,9 @@ public abstract class AbstractMachineBlock extends Block implements EntityBlock
 		if (!level.isClientSide)
 			return (level1, blockPos, blockState, t) ->
 			{
-				if (t instanceof MachineTile tile)
+				if (t instanceof MachineTile)
 				{
-					tile.tick();
+					((MachineTile)t).tick();
 				}
 			};
 		return null;

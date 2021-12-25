@@ -26,9 +26,9 @@ public class InfiniHeatBlock extends AbstractMachineBlock
 		if (!level.isClientSide)
 			return (level1, blockPos, blockState, t) ->
 			{
-				if (t instanceof InfiniHeatTile tile)
+				if (t instanceof InfiniHeatTile)
 				{
-					tile.tick();
+					((InfiniHeatTile)t).tick();
 				}
 			};
 		return null;

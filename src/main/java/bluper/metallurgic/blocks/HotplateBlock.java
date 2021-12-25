@@ -80,9 +80,9 @@ public class HotplateBlock extends AbstractMachineBlock
 		if (!level.isClientSide)
 			return (level1, blockPos, blockState, t) ->
 			{
-				if (t instanceof HotplateTile tile)
+				if (t instanceof HotplateTile)
 				{
-					tile.tick();
+					((HotplateTile)t).tick();
 				}
 			};
 		return null;
