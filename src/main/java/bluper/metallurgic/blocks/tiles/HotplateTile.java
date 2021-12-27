@@ -17,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CampfireCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class HotplateTile extends MachineTile
@@ -35,9 +34,8 @@ public class HotplateTile extends MachineTile
 	@Override
 	public void tick()
 	{
-		super.tick();
 		ItemStack itemstack = inventory.getStackInSlot(0);
-		boolean hot = heatStorage.getTemp() > 449;
+		boolean hot = heatStorage.getTemp() > Temperature.FOOD_COOKING;
 		if (hot)
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(HotplateBlock.LIT, true));
 		else
@@ -62,6 +60,7 @@ public class HotplateTile extends MachineTile
 				inventory.setStackInSlot(0, ItemStack.EMPTY);
 			}
 		}
+		super.tick();
 	}
 
 	@Override
@@ -85,8 +84,7 @@ public class HotplateTile extends MachineTile
 	private void inventoryChanged()
 	{
 		this.setChanged();
-		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(),
-				Constants.BlockFlags.NOTIFY_NEIGHBORS + Constants.BlockFlags.BLOCK_UPDATE);
+		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 0);
 	}
 
 	public boolean addItem(ItemStack itemStackIn, int cookTime)
@@ -120,7 +118,7 @@ public class HotplateTile extends MachineTile
 	{
 		CompoundTag nbt = new CompoundTag();
 		save(nbt);
-		return new ClientboundBlockEntityDataPacket(this.getBlockPos(), -1, nbt);
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	@Override
@@ -138,8 +136,8 @@ public class HotplateTile extends MachineTile
 
 	public void dropContents()
 	{
-		Containers.dropItemStack(level, (double) worldPosition.getX(), (double) worldPosition.getY() + 1, (double) worldPosition.getZ(),
-				inventory.getStackInSlot(0));
+		Containers.dropItemStack(level, (double) worldPosition.getX(), (double) worldPosition.getY() + 1,
+				(double) worldPosition.getZ(), inventory.getStackInSlot(0));
 		inventory.setStackInSlot(0, ItemStack.EMPTY);
 		inventoryChanged();
 	}

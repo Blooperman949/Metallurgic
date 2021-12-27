@@ -46,6 +46,7 @@ public class SodiumBlock extends Block
 		boolean flag = isTouchingLiquid(w, context.getClickedPos());
 		if (flag)
 			explode(w, context.getClickedPos());
+		System.out.println(flag);
 		return flag ? Blocks.AIR.defaultBlockState() : super.getStateForPlacement(context);
 	}
 
@@ -67,11 +68,11 @@ public class SodiumBlock extends Block
 		for (Direction direction : Direction.values())
 		{
 			BlockState blockstate = reader.getBlockState(mutable);
-			if (direction != Direction.DOWN || isWater(blockstate))
+			if (direction != Direction.DOWN || blockstate.getFluidState().is(FluidTags.WATER))
 			{
 				mutable.setWithOffset(pos, direction);
 				blockstate = reader.getBlockState(mutable);
-				if (isWater(blockstate) && !blockstate.isSolidRender(reader, pos));
+				if (blockstate.getFluidState().is(FluidTags.WATER) && !blockstate.isSolidRender(reader, pos));
 				{
 					flag = true;
 					break;
@@ -80,11 +81,6 @@ public class SodiumBlock extends Block
 		}
 
 		return flag;
-	}
-
-	private static boolean isWater(BlockState state)
-	{
-		return state.getFluidState().is(FluidTags.WATER);
 	}
 
 	@Override

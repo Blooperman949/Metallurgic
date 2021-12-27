@@ -8,12 +8,13 @@ import bluper.metallurgic.blocks.HotplateBlock;
 import bluper.metallurgic.blocks.InfiniHeatBlock;
 import bluper.metallurgic.blocks.LithiumFireBlock;
 import bluper.metallurgic.blocks.MeatBlock;
+import bluper.metallurgic.blocks.RefineryBlock;
 import bluper.metallurgic.blocks.SodiumBlock;
 import bluper.metallurgic.blocks.tiles.HeatstoneTile;
 import bluper.metallurgic.blocks.tiles.HotplateTile;
 import bluper.metallurgic.blocks.tiles.InfiniHeatTile;
+import bluper.metallurgic.blocks.tiles.RefineryTile;
 import bluper.metallurgic.items.ThermometerItem;
-import bluper.metallurgic.util.MMaterial;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -31,9 +32,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 @Mod(Metallurgic.MOD_ID)
 public class Metallurgic
@@ -44,14 +45,13 @@ public class Metallurgic
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
 	public static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister
 			.create(ForgeRegistries.BLOCK_ENTITIES, MOD_ID);
+	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
 	public static final DamageSource HOTPLATE_DAMAGE = new DamageSource("hotplate").setIsFire();
 	public static final DamageSource MACHINE_EXPLODE_DAMAGE = new DamageSource("machine_explosion").setExplosion();
 	public static final DamageSource SODIUM_EXPLODE_DAMAGE = new DamageSource("sodium_explosion").setExplosion();
-
 	public static final Block.Properties MACHINE_STONE_PROPERTIES = Properties.of(Material.STONE).strength(3.0f)
 			.requiresCorrectToolForDrops();
-
 	private static final CreativeModeTab MACHINES = new CreativeModeTab("machines")
 	{
 		@Override
@@ -60,8 +60,6 @@ public class Metallurgic
 			return new ItemStack(MACHINE_FRAME_ITEM.get());
 		}
 	};
-
-	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
 	public Metallurgic()
 	{
@@ -74,7 +72,7 @@ public class Metallurgic
 		BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
 		ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
 		TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
-
+		
 		// Config Setup
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_CONFIG);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
@@ -106,7 +104,7 @@ public class Metallurgic
 			() -> new BlockItem(MALLEABLE_ORE_BLOCK.get(),
 					new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
 	public static final RegistryObject<Block> LITHIUM_FIRE = BLOCKS.register("lithium_fire",
-			() -> new LithiumFireBlock(Block.Properties.of(Material.FIRE, MMaterial.LITHIUM.getColor()).noCollission()
+			() -> new LithiumFireBlock(Block.Properties.of(Material.FIRE, MaterialColor.COLOR_PINK).noCollission()
 					.strength(0.0f).lightLevel((state) ->
 					{
 						return 10;
@@ -132,6 +130,11 @@ public class Metallurgic
 			() -> new BlockItem(HOTPLATE_BLOCK.get(), new Item.Properties().tab(MACHINES)));
 	public static final RegistryObject<BlockEntityType<HotplateTile>> HOTPLATE_TILE = TILES.register("hotplate",
 			() -> BlockEntityType.Builder.of(HotplateTile::new, HOTPLATE_BLOCK.get()).build(null));
+	public static final RegistryObject<Block> REFINERY_BLOCK = BLOCKS.register("refinery", RefineryBlock::new);
+	public static final RegistryObject<Item> REFINERY_ITEM = ITEMS.register("refinery",
+			() -> new BlockItem(REFINERY_BLOCK.get(), new Item.Properties().tab(MACHINES)));
+	public static final RegistryObject<BlockEntityType<RefineryTile>> REFINERY_TILE = TILES.register("refinery",
+			() -> BlockEntityType.Builder.of(RefineryTile::new, REFINERY_BLOCK.get()).build(null));
 
 	// Miscellaneous items
 	public static final RegistryObject<Item> INSULATOR_ITEM = ITEMS.register("insulator",
@@ -154,8 +157,6 @@ public class Metallurgic
 	public static final RegistryObject<Item> TITANIUM_INGOT_ITEM = ITEMS.register("titanium_ingot",
 			() -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS)));
 	public static final RegistryObject<Item> NICKEL_INGOT_ITEM = ITEMS.register("nickel_ingot",
-			() -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS)));
-	public static final RegistryObject<Item> COPPER_INGOT_ITEM = ITEMS.register("copper_ingot",
 			() -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS)));
 	public static final RegistryObject<Item> TIN_INGOT_ITEM = ITEMS.register("tin_ingot",
 			() -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS)));
@@ -192,8 +193,6 @@ public class Metallurgic
 			() -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS)));
 	public static final RegistryObject<Item> NICKEL_NUGGET_ITEM = ITEMS.register("nickel_nugget",
 			() -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS)));
-	public static final RegistryObject<Item> COPPER_NUGGET_ITEM = ITEMS.register("copper_nugget",
-			() -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS)));
 	public static final RegistryObject<Item> TIN_NUGGET_ITEM = ITEMS.register("tin_nugget",
 			() -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS)));
 	public static final RegistryObject<Item> LEAD_INGOT_ITEM = ITEMS.register("lead_ingot",
@@ -216,44 +215,41 @@ public class Metallurgic
 			() -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS)));
 
 	public static final RegistryObject<Block> LITHIUM_BLOCK = BLOCKS.register("lithium_block",
-			() -> new Block(Block.Properties.of(MMaterial.LITHIUM).strength(4.0f, 3.0f).requiresCorrectToolForDrops()
-					.sound(SoundType.METAL)));
+			() -> new Block(Block.Properties.of(Material.METAL, MaterialColor.COLOR_PINK).strength(4.0f, 3.0f)
+					.requiresCorrectToolForDrops().sound(SoundType.METAL)));
 	public static final RegistryObject<Item> LITHIUM_BLOCK_ITEM = ITEMS.register("lithium_block",
 			() -> new BlockItem(LITHIUM_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
 	public static final RegistryObject<Block> MAGNESIUM_BLOCK = BLOCKS.register("magnesium_block",
-			() -> new Block(Block.Properties.of(MMaterial.TITANIUM).strength(5.0f).requiresCorrectToolForDrops()
-					.sound(SoundType.METAL)));
+			() -> new Block(Block.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).strength(5.0f)
+					.requiresCorrectToolForDrops().sound(SoundType.METAL)));
 	public static final RegistryObject<Item> MAGNESIUM_BLOCK_ITEM = ITEMS.register("magnesium_block",
 			() -> new BlockItem(MAGNESIUM_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
-	public static final RegistryObject<Block> SODIUM_BLOCK = BLOCKS.register("sodium_block", () -> new SodiumBlock(
-			Block.Properties.of(MMaterial.SODIUM).strength(3.0f, 0.0f).randomTicks().sound(SoundType.BASALT)));
+	public static final RegistryObject<Block> SODIUM_BLOCK = BLOCKS.register("sodium_block",
+			() -> new SodiumBlock(Block.Properties.of(Material.METAL, MaterialColor.QUARTZ).strength(3.0f, 0.0f)
+					.randomTicks().sound(SoundType.BASALT)));
 	public static final RegistryObject<Item> SODIUM_BLOCK_ITEM = ITEMS.register("sodium_block",
 			() -> new BlockItem(SODIUM_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
 	public static final RegistryObject<Block> TITANIUM_BLOCK = BLOCKS.register("titanium_block",
-			() -> new Block(Block.Properties.of(MMaterial.TITANIUM).strength(10.0f, 40.0f).requiresCorrectToolForDrops()
-					.sound(SoundType.METAL)));
+			() -> new Block(Block.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).strength(10.0f, 40.0f)
+					.requiresCorrectToolForDrops().sound(SoundType.METAL)));
 	public static final RegistryObject<Item> TITANIUM_BLOCK_ITEM = ITEMS.register("titanium_block",
 			() -> new BlockItem(TITANIUM_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
 	public static final RegistryObject<Block> NICKEL_BLOCK = BLOCKS.register("nickel_block",
-			() -> new Block(Block.Properties.of(MMaterial.NICKEL).strength(5.0f, 6.0f).requiresCorrectToolForDrops()
-					.sound(SoundType.METAL)));
+			() -> new Block(Block.Properties.of(Material.METAL, MaterialColor.GOLD).strength(5.0f, 6.0f)
+					.requiresCorrectToolForDrops().sound(SoundType.METAL)));
 	public static final RegistryObject<Item> NICKEL_BLOCK_ITEM = ITEMS.register("nickel_block",
 			() -> new BlockItem(NICKEL_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
-	public static final RegistryObject<Block> COPPER_BLOCK = BLOCKS.register("copper_block", () -> new Block(
-			Block.Properties.of(MMaterial.COPPER).strength(5.0f).requiresCorrectToolForDrops().sound(SoundType.METAL)));
-	public static final RegistryObject<Item> COPPER_BLOCK_ITEM = ITEMS.register("copper_block",
-			() -> new BlockItem(COPPER_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
 	public static final RegistryObject<Block> TIN_BLOCK = BLOCKS.register("tin_block", () -> new Block(Block.Properties
 			.of(Material.METAL).strength(5.0f, 6.0f).requiresCorrectToolForDrops().sound(SoundType.METAL)));
 	public static final RegistryObject<Item> TIN_BLOCK_ITEM = ITEMS.register("tin_block",
 			() -> new BlockItem(TIN_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
 	public static final RegistryObject<Block> LEAD_BLOCK = BLOCKS.register("lead_block",
-			() -> new Block(Block.Properties.of(MMaterial.LEAD).strength(6.0f, 8.0f).requiresCorrectToolForDrops()
-					.sound(SoundType.METAL)));
+			() -> new Block(Block.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).strength(6.0f, 8.0f)
+					.requiresCorrectToolForDrops().sound(SoundType.METAL)));
 	public static final RegistryObject<Item> LEAD_BLOCK_ITEM = ITEMS.register("lead_block",
 			() -> new BlockItem(LEAD_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
 	public static final RegistryObject<Block> ALUMINIUM_BLOCK = BLOCKS.register("aluminium_block",
-			() -> new Block(Block.Properties.of(MMaterial.CHROMIUM).strength(5.0f, 6.0f).requiresCorrectToolForDrops()
+			() -> new Block(Block.Properties.of(Material.METAL).strength(5.0f, 6.0f).requiresCorrectToolForDrops()
 					.sound(SoundType.BONE_BLOCK)));
 	public static final RegistryObject<Item> ALUMINIUM_BLOCK_ITEM = ITEMS.register("aluminium_block",
 			() -> new BlockItem(ALUMINIUM_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
@@ -273,27 +269,27 @@ public class Metallurgic
 	public static final RegistryObject<Item> ZINC_BLOCK_ITEM = ITEMS.register("zinc_block",
 			() -> new BlockItem(ZINC_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
 	public static final RegistryObject<Block> MOLYBDENUM_BLOCK = BLOCKS.register("molybdenum_block",
-			() -> new Block(Block.Properties.of(MMaterial.MOLYBDENUM).strength(5.0f, 6.0f).requiresCorrectToolForDrops()
-					.sound(SoundType.METAL)));
+			() -> new Block(Block.Properties.of(Material.METAL, MaterialColor.TERRACOTTA_GREEN).strength(5.0f, 6.0f)
+					.requiresCorrectToolForDrops().sound(SoundType.METAL)));
 	public static final RegistryObject<Item> MOLYBDENUM_BLOCK_ITEM = ITEMS.register("molybdenum_block",
 			() -> new BlockItem(MOLYBDENUM_BLOCK.get(),
 					new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
 	public static final RegistryObject<Block> COBALT_BLOCK = BLOCKS.register("cobalt_block",
-			() -> new Block(Block.Properties.of(MMaterial.COBALT).strength(5.0f, 7.0f).requiresCorrectToolForDrops()
-					.sound(SoundType.METAL)));
+			() -> new Block(Block.Properties.of(Material.METAL, MaterialColor.COLOR_BLUE).strength(5.0f, 7.0f)
+					.requiresCorrectToolForDrops().sound(SoundType.METAL)));
 	public static final RegistryObject<Item> COBALT_BLOCK_ITEM = ITEMS.register("cobalt_block",
 			() -> new BlockItem(COBALT_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
 	public static final RegistryObject<Block> CHROMIUM_BLOCK = BLOCKS.register("chromium_block",
-			() -> new Block(Block.Properties.of(MMaterial.CHROMIUM).strength(5.0f, 6.0f).requiresCorrectToolForDrops()
-					.lightLevel((state) ->
+			() -> new Block(Block.Properties.of(Material.METAL, MaterialColor.WARPED_WART_BLOCK).strength(5.0f, 6.0f)
+					.requiresCorrectToolForDrops().lightLevel((state) ->
 					{
 						return 5;
 					}).sound(SoundType.BONE_BLOCK)));
 	public static final RegistryObject<Item> CHROMIUM_BLOCK_ITEM = ITEMS.register("chromium_block",
 			() -> new BlockItem(CHROMIUM_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
 	public static final RegistryObject<Block> BISMUTH_BLOCK = BLOCKS.register("bismuth_block",
-			() -> new Block(Block.Properties.of(MMaterial.LITHIUM).strength(3.0f, 4.0f).requiresCorrectToolForDrops()
-					.lightLevel((state) ->
+			() -> new Block(Block.Properties.of(Material.METAL, MaterialColor.COLOR_PINK).strength(3.0f, 4.0f)
+					.requiresCorrectToolForDrops().lightLevel((state) ->
 					{
 						return 3;
 					}).sound(SoundType.METAL)));

@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -63,14 +64,17 @@ public class MachineTile extends BlockEntity implements IForgeBlockEntity
 		if (!level.isClientSide)
 		{
 			double loss = heatStorage.getTemp() / (baseTemp * 10);
-			if (transferDirs.length > 0) //TODO && no redstone power
+			if (transferDirs.length > 0 && level.getDirectSignalTo(this.worldPosition) == 0)
 				for (Direction d : transferDirs)
 					sendPower(d, loss);
 			if (!insulated)
 				heatStorage.removeHeat(loss);
 			if (heatStorage.getTemp() > heatStorage.getMax())
-				level.explode(null, Metallurgic.MACHINE_EXPLODE_DAMAGE, null, (double) this.worldPosition.getX(),
-						(double) this.worldPosition.getY(), (double) this.worldPosition.getZ(), 2.0f, true, Explosion.BlockInteraction.DESTROY);
+			{
+				level.explode(null, Metallurgic.MACHINE_EXPLODE_DAMAGE, null, this.worldPosition.getX(),
+						this.worldPosition.getY(), this.worldPosition.getZ(), 2.0f, true, Explosion.BlockInteraction.DESTROY);
+				level.setBlock(this.worldPosition, Blocks.AIR.defaultBlockState(), 0);
+			}
 		}
 	}
 
@@ -82,7 +86,7 @@ public class MachineTile extends BlockEntity implements IForgeBlockEntity
 				((MachineTile) te).getHeatStorage().addHeat(heatStorage.removeHeat(transfer));
 	}
 
-	public HeatStorage getHeatStorage()
+	public final HeatStorage getHeatStorage()
 	{
 		return heatStorage;
 	}

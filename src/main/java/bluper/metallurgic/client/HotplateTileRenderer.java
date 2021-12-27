@@ -7,19 +7,16 @@ import bluper.metallurgic.blocks.tiles.HotplateTile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.core.BlockPos;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.client.model.animation.AnimationBlockEntityRenderer;
 
-public class HotplateTileRenderer extends AnimationBlockEntityRenderer<HotplateTile>
+public class HotplateTileRenderer implements BlockEntityRenderer<HotplateTile>
 {
 	private static Minecraft mc = Minecraft.getInstance();
 
-	public HotplateTileRenderer(BlockEntityRenderDispatcher rendererDispatcherIn)
+	public HotplateTileRenderer(BlockEntityRendererProvider.Context context)
 	{
-		super();
 	}
 
 	@Override
@@ -32,13 +29,9 @@ public class HotplateTileRenderer extends AnimationBlockEntityRenderer<HotplateT
 			ms.translate(0.5d, 1.0d, 0.5d);
 			ms.mulPose(Vector3f.XP.rotationDegrees(90.0f));
 			ms.scale(0.7f, 0.7f, 0.7f);
-			mc.getItemRenderer().renderAndDecorateItem(is, LevelRenderer.getLightColor(te.getLevel(), te.getBlockPos().above()), co);
+			mc.getItemRenderer().renderAndDecorateItem(is,
+					LevelRenderer.getLightColor(te.getLevel(), te.getBlockPos().above()), co);
 			ms.popPose();
 		}
-	}
-
-	public int getLightLevel(Level world, BlockPos pos)
-	{
-		return LevelRenderer.getLightColor(world, pos);
 	}
 }
